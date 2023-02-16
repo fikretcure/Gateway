@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Http;
 
 Route::any("services", function () {
     $method = request()->method();
-    $response = Http::$method('http://' . request()->url, request()->all());
+    $response = Http::withHeaders([
+        'bearer' => request()->header("bearer"),
+        'refresh' => request()->header("refresh")
+    ])->$method('http://' . request()->url, request()->all());
     return response()->json($response->json(), $response->status());
 });
