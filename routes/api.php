@@ -19,7 +19,8 @@ Route::any("services", function () {
     $method = request()->method();
     $response = Http::withHeaders([
         'bearer' => request()->header("bearer"),
-        'refresh' => request()->header("refresh")
+        'refresh' => request()->header("refresh"),
+        'API_CONNECTION_KEY' => env("API_CONNECTION_KEY"),
     ])->$method('http://' . request()->url, request()->all());
     return response()->json($response->json(), $response->status());
 });
