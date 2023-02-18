@@ -2,12 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
-class AuthenticationLoginRequest extends FormRequest
+class UserLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,8 +28,7 @@ class AuthenticationLoginRequest extends FormRequest
             "email" => [
                 "required",
                 "string",
-                "email:rfc,dns",
-                Rule::exists(User::class)
+                "email:rfc,dns"
             ],
             "password" => [
                 'required',
