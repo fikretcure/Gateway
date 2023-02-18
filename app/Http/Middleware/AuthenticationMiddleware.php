@@ -18,7 +18,7 @@ class AuthenticationMiddleware
      * @param Closure $next
      * @return JsonResponse
      */
-    public function handle(Request $request, Closure $next): JsonResponse//: JsonResponse
+    public function handle(Request $request, Closure $next)
     {
         return $next($request);
 
