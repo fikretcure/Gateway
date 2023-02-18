@@ -3,21 +3,26 @@
 namespace App\Http\Controllers;
 
 
+use App\Helpers\UserHelper;
 use App\Http\Middleware\AuthenticationMiddleware;
+use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Models\Token;
+use App\Repositories\TokenRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Hash;
 
-/**
- *
- */
+
 class UserController extends Controller
 {
     /**
      * @var UserRepository
      */
     private UserRepository $userRepository;
+    private TokenRepository $tokenRepository;
+    private UserHelper $userHelper;
 
     /**
      *
@@ -25,7 +30,9 @@ class UserController extends Controller
     public function __construct()
     {
         $this->userRepository = new UserRepository();
-        $this->middleware(AuthenticationMiddleware::class)->except('store');
+        $this->tokenRepository = new TokenRepository();
+        $this->userHelper = new UserHelper();
+        $this->middleware(AuthenticationMiddleware::class)->except('store', 'login');
     }
 
     /**
@@ -71,5 +78,29 @@ class UserController extends Controller
     public function destroy($id): JsonResponse
     {
         return $this->success($this->userRepository->destroy($id))->send();
+    }
+
+    /**
+     * @param UserLoginRequest $request
+     * @return JsonResponse
+     */
+    public function login(UserLoginRequest $request): JsonResponse
+    {
+        $user = $this->userRepository->getUserFromEmail($request->validated("email"));
+        if (Hash::check($request->password, $user->password)) {
+            $bearer = str()->uuid();
+            $refresh = str()->uuid();
+            $user_id = $user->id;
+
+            $remote_addr = $request->server("REMOTE_ADDR");
+            $server_addr = $request->server("SERVER_ADDR");
+            $http_user_agent = $request->server("HTTP_USER_AGENT");
+
+            $this->tokenRepository->store(compact("user_id", "bearer", "refresh", "remote_addr", "server_addr", "http_user_agent"));
+            $this->userHelper->setCacheToken($bearer, $refresh);
+
+            return $this->success()->send();
+        }
+        return $this->failMes("Bilgilerini tekrar girerek denemelisin !")->send();
     }
 }
