@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Token;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -11,30 +11,35 @@ use Illuminate\Database\Eloquent\Model;
 /**
  *
  */
-class TokenRepository extends Repository
+class UserRepository extends Repository
 {
+
+    /**
+     * @var String | Builder|Model
+     */
+    private Model|Builder|String $model;
 
     /**
      *
      */
     public function __construct()
     {
-        $this->model = Token::class;
+        $this->model = User::class;
     }
 
     /**
-     * @return mixed
+     * @return Builder|Collection
      */
-    public function index()
+    public function index(): Collection|Builder
     {
         return $this->model::query()->get();
     }
 
     /**
      * @param array $attributes
-     * @return mixed
+     * @return Builder|Model
      */
-    public function store(array $attributes): mixed
+    public function store(array $attributes): Model|Builder
     {
         return $this->model::query()->create(attributes: $attributes + $this->createRegistrationCode($this->model));
     }
@@ -51,9 +56,9 @@ class TokenRepository extends Repository
 
     /**
      * @param int $id
-     * @return Model|Collection|Builder
+     * @return Builder|Collection|Model|null
      */
-    public function show(int $id): Model|Collection|Builder
+    public function show(int $id): Model|Collection|Builder|null
     {
         return $this->model::query()->findOrFail($id);
     }
