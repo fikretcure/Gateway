@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 
+use App\Traits\ResponseTrait;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
  */
 class AuthenticationMiddleware
 {
+    use ResponseTrait;
 
     /**
      * @param Request $request
@@ -20,6 +22,9 @@ class AuthenticationMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+
+//        return $this->failMes("Hatasız kul olmaz !")->send();
+
         return $next($request);
 
     }
