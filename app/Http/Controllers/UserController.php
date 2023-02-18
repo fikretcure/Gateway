@@ -15,13 +15,25 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
 
+/**
+ *
+ */
 class UserController extends Controller
 {
+
     /**
      * @var UserRepository
      */
     private UserRepository $userRepository;
+
+    /**
+     * @var TokenRepository
+     */
     private TokenRepository $tokenRepository;
+
+    /**
+     * @var UserHelper
+     */
     private UserHelper $userHelper;
 
     /**
