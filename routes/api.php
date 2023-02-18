@@ -15,15 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::middleware(AuthenticationMiddleware::class)->group(function () {
-    Route::apiResources([
-        'users' => UserController::class,
-    ]);
-});
 
 
-Route::get("test", function () {
-    return request()->server("SERVER_ADDR");
-//    return request()->server("HTTP_USER_AGENT");
-//    return request()->server("REMOTE_ADDR");
 });
+
+/**
+ * Middleware Controller İçinde Verildi
+ */
+Route::apiResource('users', UserController::class);
+
+Route::post("users/login", [UserController::class, "login"])->name("users.login");
 
