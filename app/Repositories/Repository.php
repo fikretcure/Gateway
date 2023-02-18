@@ -3,9 +3,9 @@
 namespace App\Repositories;
 
 
-use App\Traits\RegistrationCodeUuIdTrait;
+use App\Traits\RegistrationCodeTrait;
 
 class Repository
 {
-    use RegistrationCodeUuIdTrait;
+    use RegistrationCodeTrait;
 }
