@@ -76,7 +76,7 @@ class UserRepository extends Repository
      * @param $email
      * @return mixed
      */
-    public function showByEmail($email): mixed
+    public function getUserFromEmail($email): mixed
     {
         return $this->model::query()->whereEmail($email)->firstOrFail()->makeVisible('password');
     }
