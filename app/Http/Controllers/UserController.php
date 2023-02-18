@@ -8,7 +8,6 @@ use App\Http\Middleware\AuthenticationMiddleware;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
-use App\Models\Token;
 use App\Repositories\TokenRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
