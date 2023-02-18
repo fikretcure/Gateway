@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
         (new UserRepository())->store([
             "name" => "fikret",
             "surname" => "cure",
-            "email" => rand(),
+            "email" => "fikretcure@gmail.com",
             "password" => "Fikret-1461"
         ]);
     }
