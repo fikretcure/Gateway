@@ -17,7 +17,7 @@ class TokenRepository extends Repository
     /**
      * @var String | Builder|Model
      */
-    private Model|Builder|String $model;
+    private Model|Builder|string $model;
 
     /**
      *
@@ -41,7 +41,9 @@ class TokenRepository extends Repository
      */
     public function store(array $attributes): Model|Builder
     {
-        return $this->model::query()->create(attributes: $attributes + $this->createRegistrationCode($this->model));
+        return $this->model::query()->create([
+            "data" => $attributes
+        ]);
     }
 
     /**
