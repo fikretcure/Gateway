@@ -22,10 +22,6 @@ class AuthenticationMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-
-//        return $this->failMes("Hatasız kul olmaz !")->send();
-
         return $next($request);
-
     }
 }
