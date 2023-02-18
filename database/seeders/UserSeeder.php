@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Http\Repositories\UserRepository;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use app\Repositories\UserRepository;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
