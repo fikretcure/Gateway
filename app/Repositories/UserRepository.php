@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  *
- * @property Builder $model
  */
 class UserRepository extends Repository
 {
@@ -23,15 +22,13 @@ class UserRepository extends Repository
         $this->model = User::class;
     }
 
-
     /**
-     * @return Collection
+     * @return mixed
      */
-    public function index(): Collection
+    public function index()
     {
         return $this->model::query()->get();
     }
-
 
     /**
      * @param array $attributes
@@ -39,7 +36,7 @@ class UserRepository extends Repository
      */
     public function store(array $attributes): mixed
     {
-        return $this->model::query()->create(attributes: $attributes + $this->createRegistrationCode( $this->model));
+        return $this->model::query()->create(attributes: $attributes + $this->createRegistrationCode($this->model));
     }
 
     /**
@@ -49,7 +46,7 @@ class UserRepository extends Repository
      */
     public function update(array $attributes, int $id): bool|int
     {
-        return $this->model->findOrFail($id)->update($attributes);
+        return $this->model::query()->findOrFail($id)->update($attributes);
     }
 
     /**
@@ -58,7 +55,7 @@ class UserRepository extends Repository
      */
     public function show(int $id): Model|Collection|Builder
     {
-        return $this->model->findOrFail($id);
+        return $this->model::query()->findOrFail($id);
     }
 
     /**
@@ -67,7 +64,7 @@ class UserRepository extends Repository
      */
     public function destroy(int $id): mixed
     {
-        return $this->model->findOrFail($id)->delete();
+        return $this->model::query()->findOrFail($id)->delete();
     }
 
     /**
@@ -76,7 +73,7 @@ class UserRepository extends Repository
      */
     public function showByEmail($email): mixed
     {
-        return $this->model->whereEmail($email)->firstOrFail()->makeVisible('password');
+        return $this->model::query()->whereEmail($email)->firstOrFail()->makeVisible('password');
     }
 
 }
