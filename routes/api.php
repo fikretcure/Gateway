@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Http;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,4 +13,14 @@ use Illuminate\Support\Facades\Http;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::apiResources([
+    'users' => UserController::class,
+]);
+
+
+Route::get("test", function () {
+    return request()->server("SERVER_ADDR");
+//    return request()->server("HTTP_USER_AGENT");
+//    return request()->server("REMOTE_ADDR");
+});
 
