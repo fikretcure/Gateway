@@ -21,15 +21,13 @@ class Token extends Model
      */
     protected $fillable = [
         "data",
-        "id"
     ];
 
     /**
      * @var string[]
      */
     protected $casts = [
-        "data" => "json",
-        "id" => "string"
+        "data" => "json"
     ];
 
     /**
