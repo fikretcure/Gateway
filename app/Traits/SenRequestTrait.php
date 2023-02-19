@@ -16,15 +16,15 @@ trait SenRequestTrait
      * @return string
      * @throws Throwable
      */
-    public function sendRequest($url, $method = null): mixed
+    public function sendRequest($url, $method = null, $data = null): mixed
     {
         $method = $method ?? "get";
-
         $response = Http::withHeaders([
             'API-CONNECTION-KEY' => env("API_CONNECTION_KEY"),
-        ])->$method("http://" . $url);
-        throw_if($response->failed(), \Exception::class, $url);
+            "Accept" => "application/json"
+        ])->$method("http://" . $url, $data);
 
+        throw_if($response->failed(), \Exception::class, $response->json());
         return $response->collect();
     }
 }
