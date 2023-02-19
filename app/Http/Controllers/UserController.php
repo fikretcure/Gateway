@@ -112,7 +112,13 @@ class UserController extends Controller
             $this->tokenRepository->store(compact("user_id", "bearer", "refresh", "remote_addr", "server_addr", "http_user_agent"));
             $this->userHelper->setCacheToken($bearer, $refresh);
 
-            $this->sendRequest("emailservice.test/api/shipped","post");
+            $this->sendRequest("emailservice.test/api/shipped", "post", [
+                "type" => "login",
+                "emails" => [
+                    $user->email
+                ],
+                "user" => $user->name . " " . $user->surname
+            ]);
 
             return $this->success()->send();
         }
