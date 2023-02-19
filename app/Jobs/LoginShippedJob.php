@@ -36,7 +36,7 @@ class LoginShippedJob implements ShouldQueue
                 $this->data["email"]
             ],
             "user" => $this->data["name"],
-            "date" => now()->format("d/m/y H:i"),
+            "date" => $this->data["date"],
             "http_user_agent" => $this->data["http_user_agent"]
         ]);
     }
