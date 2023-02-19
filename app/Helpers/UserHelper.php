@@ -20,4 +20,13 @@ class UserHelper
         Cache::put("refresh", $refresh);
     }
 
+    /**
+     * @return void
+     */
+    public function clearCacheToken(): void
+    {
+        Cache::put("bearer", null);
+        Cache::put("refresh", null);
+    }
+
 }
