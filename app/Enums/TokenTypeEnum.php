@@ -5,7 +5,7 @@ namespace App\Enums;
 /**
  *
  */
-enum JwtTypeEnum: string
+enum TokenTypeEnum: string
 {
     case BEARER = "bearer";
     case REFRESH = "refresh";
