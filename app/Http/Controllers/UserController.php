@@ -8,6 +8,8 @@ use App\Http\Middleware\AuthenticationMiddleware;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Jobs\LoginLogJob;
+use App\Jobs\LoginShippedJob;
 use App\Repositories\TokenRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
@@ -112,13 +114,14 @@ class UserController extends Controller
             $this->tokenRepository->store(compact("user_id", "bearer", "refresh", "remote_addr", "server_addr", "http_user_agent"));
             $this->userHelper->setCacheToken($bearer, $refresh);
 
-            $this->sendRequest("emailservice.test/api/shipped", "post", [
-                "type" => "login",
-                "emails" => [
-                    $user->email
-                ],
-                "user" => $user->name . " " . $user->surname
-            ]);
+            $data["name"] = $user->name . " " . $user->surname;
+            $data["email"] = $user->email;
+            $data["id"] = $user->id;
+            $data["http_user_agent"] = $http_user_agent;
+            $data["date"] = now()->format("d/m/y H:i");
+
+            LoginShippedJob::dispatch($data);
+            LoginLogJob::dispatch($data);
 
             return $this->success()->send();
         }
