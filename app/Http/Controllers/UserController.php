@@ -12,6 +12,7 @@ use App\Repositories\TokenRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Throwable;
 
 
 /**
@@ -94,6 +95,7 @@ class UserController extends Controller
     /**
      * @param UserLoginRequest $request
      * @return JsonResponse
+     * @throws Throwable
      */
     public function login(UserLoginRequest $request): JsonResponse
     {
@@ -109,6 +111,8 @@ class UserController extends Controller
 
             $this->tokenRepository->store(compact("user_id", "bearer", "refresh", "remote_addr", "server_addr", "http_user_agent"));
             $this->userHelper->setCacheToken($bearer, $refresh);
+
+            $this->sendRequest("emailservice.test/api/shipped","post");
 
             return $this->success()->send();
         }
