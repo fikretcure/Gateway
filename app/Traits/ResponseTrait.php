@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Enums\TokenTypeEnum;
 use App\Enums\RouteNameEnum;
+use App\Helpers\UserHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 
@@ -92,19 +93,15 @@ trait ResponseTrait
      */
     public function send(int $status = null): JsonResponse
     {
-        $this->status = $status ?? $this->status;
-
         $bearer = Cache::get(TokenTypeEnum::BEARER->value);
         $refresh = Cache::get(TokenTypeEnum::REFRESH->value);
-
-        Cache::put(TokenTypeEnum::BEARER->value, null);
-        Cache::put(TokenTypeEnum::REFRESH->value, null);
+        (new UserHelper())->clearCacheToken();
 
         return response()->json([
             "info" => RouteNameEnum::generateInfoMes(request()->route()->getName()) . " " . $this->info_message,
             "message" => $this->message ?? null,
             "data" => $this->data ?? null,
-        ], $this->status)->withHeaders([
+        ], $status ?? $this->status)->withHeaders([
             TokenTypeEnum::BEARER->value => $bearer,
             TokenTypeEnum::REFRESH->value => $refresh,
         ]);
